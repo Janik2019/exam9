@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Удалить фотографию{% endblock %}
+{% block content %}
+    <h3 class="text-center">Фото {{ photo }} будет удален</h3>
+    <form class="text-center" action="{% url "webapp:photo_delete" photo.pk %}"
+          method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="submit" value="ОК" class="btn btn-danger">
+        <a href="{% url 'webapp:index' %}" class="btn btn-secondary">Отмена</a>
+    </form>
+{% endblock %}
+
+{#{% extends 'base.html' %}#}
+{##}
+{#{% block title %}Удалить фотографию{% endblock %}#}
+{##}
+{#{% block menu %}#}
+{#    <li><a href="{% url 'webapp:article_view' photo.pk %}">View</a></li>#}
+{#{% endblock %}#}
+{##}
+{#{% block content %}#}
+{#    <h1>Вы уверены что хотите удалить фотографию "{{ photo }}"?</h1>#}
+{#    <form method="POST" action="{% url 'webapp:photo_delete' photo.pk %}" class="text-center">#}
+{#        {% csrf_token %}#}
+{#        <p><input type="submit" value="Подтвердить"></p>#}
+{#        <p><a href="{% url 'webapp:photo_view' photo.pk %}">Отмена</a></p>#}
+{#    </form>#}
+{#{% endblock %}#}

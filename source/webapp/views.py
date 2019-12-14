@@ -50,3 +50,22 @@ class PhotoUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse('webapp:photo_detail', kwargs={'pk': self.object.pk})
+
+
+# class PhotoDeleteView(DeleteView):
+#     model = Photo
+#     template_name = 'delete.html'
+#     success_url = reverse_lazy('webapp:index')
+#     context_object_name = 'photos'
+#
+#     def delete(self, request, *args, **kwargs):
+#         photo = self.object = self.get_object()
+#         photo.in_order = False
+#         product.save()
+#         return HttpResponseRedirect(self.get_success_url())
+#
+class PhotoDeleteView(DeleteView):
+    model = Photo
+    template_name = 'delete.html'
+    context_object_name = 'photo'
+    success_url = reverse_lazy('webapp:index')
