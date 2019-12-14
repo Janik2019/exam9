@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Галерея{% endblock %}
+{% block content %}
+    <h1 class="text-center">Галерея</h1>
+    <div class="row">
+        {% for photo in photos %}
+            <div class="col col-3">
+                <div class="card">
+                    {% if photo.photo %}
+                        <img src="{{ photo.photo.url }}" class="card-img-top" alt="{{ photo.signature }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ photo.signature }}</h5>
+                        <p class="card-text">автор: {{ photo.author }}  дата создания {{ photo.create_at }}</p>
+                        <a href="{% url "webapp:photo_detail" photo.pk %}"
+                           class="btn btn-primary">Посмотреть</a>
+{#                        <a href="{% url 'webapp:basket_change' %}?pk={{ product.pk }}&action=add" class="btn btn-primary mt-2">В корзину</a>#}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

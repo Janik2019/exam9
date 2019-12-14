@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}{{ photo.signature }}{% endblock %}
+{% block content %}
+    <div class="text-center">
+        <h1>{{ photo.signature }}</h1>
+        <div class="row">
+            <div class="col col-12 col-sm-10 col-md-8 col-lg-6 m-auto">
+                <img src="{{ photo.photo.url }}" class="img-fluid" alt="{{ photo.signature }}">
+            </div>
+        </div>
+{#        <p><b>Категория:</b> {{ product.get_category_display }}</p>#}
+{#        <p><b>Цена:</b> {{ product.price }} сом</p>#}
+{#        <p><b>В наличии:</b> {{ product.in_order|yesno:"Да,Нет" }}</p>#}
+{#        <p><a href="{% url 'webapp:basket_change' %}?pk={{ product.pk }}&action=add&next={% url "webapp:product_detail" product.pk %}" class="btn btn-primary">В корзину</a></p>#}
+{#        <p><a href="{% url 'webapp:product_update' product.pk %}" class="btn btn-primary">Изменить</a></p>#}
+{#        <p><a href="{% url 'webapp:product_delete' product.pk %}" class="btn btn-danger">Нет в наличии</a></p>#}
+
+     <div class="text-center">
+        {% for comment in comments %}
+            <div class="#">
+                <p>{{ comment.author }} commented at {{ comment.create_at|date:'d.m.Y H:i:s' }}</p>
+                <div class="pre">{{ comment.text }}</div>
+                {% if article.is_active and request.user == comment.author or request.user.is_superuser %}
+                    <p class="#">
+                        <a href="{% url 'webapp:comment_update' comment.pk %}">Edit</a>
+                        <a href="{% url 'webapp:comment_delete' comment.pk %}">Delete</a>
+                    </p>
+                {% endif %}
+            </div>
+        {% empty %}
+            <p>No comments yet.</p>
+        {% endfor %}
+    </div>
+    </div>
+{% endblock %}
