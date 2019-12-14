@@ -28,9 +28,25 @@ class PhotoView(DetailView):
 class PhotoCreateView( CreateView):
     model = Photo
     template_name = 'create.html'
-    fields = ('signature', 'photo', 'author')
+    fields = ('signature', 'photo')
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.author = self.request.user
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
     # permission_required = 'webapp.add_product', 'webapp.can_have_piece_of_pizza'
     # permission_denied_message = '403 Доступ запрещён!'
+
+    def get_success_url(self):
+        return reverse('webapp:photo_detail', kwargs={'pk': self.object.pk})
+
+
+class PhotoUpdateView(UpdateView):
+    model = Photo
+    template_name = 'update.html'
+    fields = ('signature', 'photo')
+    # context_object_name = 'photos'
 
     def get_success_url(self):
         return reverse('webapp:photo_detail', kwargs={'pk': self.object.pk})
