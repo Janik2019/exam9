@@ -18,4 +18,3 @@ class LikeSerializer(serializers.ModelSerializer):
 
 
 
-# ./manage.py dumpdata --indent=2 webapp auth.user > webapp/fixtures/dump.json

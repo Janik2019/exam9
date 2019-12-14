@@ -20,6 +20,11 @@ class PhotoView(DetailView):
     template_name = 'photo.html'
     model = Photo
     context_object_name = 'photo'
+    ordering = ['-create_at']
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['comments']= self.object.photo_comments.all().order_by('-create_at')
+        return context
 
 
 class PhotoCreateView( CreateView, LoginRequiredMixin):
