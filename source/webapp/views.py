@@ -22,3 +22,4 @@ class IndexView(ListView):
 class PhotoView(DetailView):
     template_name = 'photo.html'
     model = Photo
+    context_object_name = 'photo'
