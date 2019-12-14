@@ -6,6 +6,7 @@ class Photo(models.Model):
     signature = models.CharField(max_length=200, verbose_name='Подпись')
     create_at = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
     author = models.ForeignKey(User, related_name='photos', on_delete=models.CASCADE, verbose_name='Автор')
+    like = models.ManyToManyField(User, through='webapp.Like', blank=True, verbose_name='userslike')
 
     def __str__(self):
         return self.signature
@@ -19,3 +20,8 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.descr
+
+
+class Like(models.Model):
+    photo = models.ForeignKey(Photo, on_delete=models.CASCADE, null=True, blank=True, verbose_name='photo', related_name='photolikes')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name='author', related_name='userlikes')

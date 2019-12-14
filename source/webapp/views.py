@@ -14,9 +14,6 @@ class IndexView(ListView):
     template_name = 'index.html'
     context_object_name = 'photos'
     ordering = ['-create_at']
-    #
-    # def get_queryset(self):
-    #     return Photo.objects.filter(in_order=True)
 
 
 class PhotoView(DetailView):
@@ -35,8 +32,6 @@ class PhotoCreateView( CreateView):
         self.object.author = self.request.user
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
-    # permission_required = 'webapp.add_product', 'webapp.can_have_piece_of_pizza'
-    # permission_denied_message = '403 Доступ запрещён!'
 
     def get_success_url(self):
         return reverse('webapp:photo_detail', kwargs={'pk': self.object.pk})
@@ -52,18 +47,6 @@ class PhotoUpdateView(UpdateView):
         return reverse('webapp:photo_detail', kwargs={'pk': self.object.pk})
 
 
-# class PhotoDeleteView(DeleteView):
-#     model = Photo
-#     template_name = 'delete.html'
-#     success_url = reverse_lazy('webapp:index')
-#     context_object_name = 'photos'
-#
-#     def delete(self, request, *args, **kwargs):
-#         photo = self.object = self.get_object()
-#         photo.in_order = False
-#         product.save()
-#         return HttpResponseRedirect(self.get_success_url())
-#
 class PhotoDeleteView(DeleteView):
     model = Photo
     template_name = 'delete.html'
