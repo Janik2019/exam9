@@ -3,7 +3,7 @@ from django.shortcuts import reverse, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 
 
@@ -22,7 +22,7 @@ class PhotoView(DetailView):
     context_object_name = 'photo'
 
 
-class PhotoCreateView( CreateView):
+class PhotoCreateView( CreateView, LoginRequiredMixin):
     model = Photo
     template_name = 'create.html'
     fields = ('signature', 'photo')
@@ -37,18 +37,28 @@ class PhotoCreateView( CreateView):
         return reverse('webapp:photo_detail', kwargs={'pk': self.object.pk})
 
 
-class PhotoUpdateView(UpdateView):
+class PhotoUpdateView(UpdateView, UserPassesTestMixin):
     model = Photo
     template_name = 'update.html'
     fields = ('signature', 'photo')
     # context_object_name = 'photos'
 
+    def test_func(self):
+        photo_pk = self.kwargs.get('pk')
+        photo = Photo.objects.get(pk=photo_pk)
+        return self.request.user == photo.author or self.request.user.has_perm('webapp.change_photo')
+
     def get_success_url(self):
         return reverse('webapp:photo_detail', kwargs={'pk': self.object.pk})
 
 
-class PhotoDeleteView(DeleteView):
+class PhotoDeleteView(DeleteView, UserPassesTestMixin):
     model = Photo
     template_name = 'delete.html'
     context_object_name = 'photo'
     success_url = reverse_lazy('webapp:index')
+
+    def test_func(self):
+        photo_pk = self.kwargs.get('pk')
+        photo = Photo.objects.get(pk=photo_pk)
+        return self.request.user == photo.author or self.request.user.has_perm('webapp.change_photo')

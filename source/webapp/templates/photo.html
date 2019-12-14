@@ -8,9 +8,12 @@
                 <img src="{{ photo.photo.url }}" class="img-fluid" alt="{{ photo.signature }}">
             </div>
         </div>
-        <p><a href="{% url 'webapp:photo_update' photo.pk %}" class="btn btn-primary">Изменить</a></p>
-        <p><a href="{% url 'webapp:photo_delete' photo.pk %}" class="btn btn-primary">Удалить</a></p>
-
+        {% if request.user.is_authenticated %}
+            <p><a href="{% url 'webapp:photo_update' photo.pk %}" class="btn btn-primary">Изменить</a></p>
+            <p><a href="{% url 'webapp:photo_delete' photo.pk %}" class="btn btn-primary">Удалить</a></p>
+        {% else %}
+            <p><a href="{% url 'webapp:login' %}" class="btn btn-primary">Войти</a></p>
+        {% endif %}
      <div class="text-center">
         {% for comment in photo.photo_comments.all %}
             <div class="#">
