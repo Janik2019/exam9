@@ -23,3 +23,14 @@ class PhotoView(DetailView):
     template_name = 'photo.html'
     model = Photo
     context_object_name = 'photo'
+
+
+class PhotoCreateView( CreateView):
+    model = Photo
+    template_name = 'create.html'
+    fields = ('signature', 'photo', 'author')
+    # permission_required = 'webapp.add_product', 'webapp.can_have_piece_of_pizza'
+    # permission_denied_message = '403 Доступ запрещён!'
+
+    def get_success_url(self):
+        return reverse('webapp:photo_detail', kwargs={'pk': self.object.pk})
